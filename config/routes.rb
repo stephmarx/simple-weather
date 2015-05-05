@@ -53,4 +53,12 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+
+  root to: 'api/v1/index#index'
+
+  namespace :api, defaults: { format: 'json' } do
+    namespace :v1 do
+      get '/location/:zip' => 'index#location'
+    end
+  end
 end
