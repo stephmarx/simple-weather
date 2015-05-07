@@ -22,10 +22,12 @@ app.controller("myCtrl",["$scope", "$http", function($scope, $http) {
 	$scope.input = {
         zip: undefined
     };
-    $scope.getForcast = function() {
+
+    $scope.getForecast = function() {
         var lookup = "/api/v1/location/" + $scope.input.zip + ".json";
         $http.get(lookup).success(function(response) {
             console.log(response);
+            $scope.forecast = response;
         });
     }
 }]);
@@ -36,7 +38,8 @@ app.directive("five", function() {
         require: "ngModel",
         link: function(scope, element, attr, ngModel) {
             ngModel.$validators.five = function(modelValue) {
-                return /^\d{5}$/.test(modelValue);
+            		var regex = new RegExp(/^\d{5}$/);
+                return regex.test(modelValue);
             }
         }
     };
