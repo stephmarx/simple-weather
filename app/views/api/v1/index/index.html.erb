@@ -1,7 +1,8 @@
 <div ng-app="myApp" ng-controller="myCtrl">
 	<h1>Enter your zip code to get a weather forcast</h1>
   <form name="myForm">
-      <input type="text" ng-model="zip" zip-validation name="zip" />
-      <span class="error" ng-show="myForm.zip.$error.zip">Invalid zip code!</span>
+<input type="text" name="zip" ng-model="input.zip" required five />
+    <span class="error" ng-show="myForm.zip.$error.zip">Invalid zip code!</span>
+    <button type="submit" ng-click="getForcast()">Get Your Forecast</button>
   </form>
 </div>

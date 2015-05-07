@@ -16,45 +16,64 @@
 //= require_tree .
 //= require angular
 
-var myApp = angular.module("myApp", []);
+var app = angular.module("myApp", []);
 
-var myCtrl = myApp.controller("myCtrl",["$scope", "$http", function($scope, $http) {
-	$http.get('/api/v1/location/60626.json').success(function(response) {console.log(response);});
-
+app.controller("myCtrl",["$scope", "$http", function($scope, $http) {
+	$scope.input = {
+        zip: undefined
+    };
+    $scope.getForcast = function() {
+        var lookup = "/api/v1/location/" + $scope.input.zip + ".json";
+        $http.get(lookup).success(function(response) {
+            console.log(response);
+        });
+    }
 }]);
 
-
-myApp.directive("zipValidation", function () {
-  return {
-    restrict: "A",
-    require: "ngModel",
-    link: function (scope, element, attr, myCtrl) {
-      var zipVal = function (value) {
-        if (/^\d{5}$/.test(value)) {
-            return value;
+app.directive("five", function() {
+    return {
+        restrict: "A",
+        require: "ngModel",
+        link: function(scope, element, attr, ngModel) {
+            ngModel.$validators.five = function(modelValue) {
+                return /^\d{5}$/.test(modelValue);
+            }
         }
-
-        return undefined;
-      }
-
-      myCtrl.$parsers.push(zipVal);
-      myCtrl.$formatters.push(zipVal);
-
-	    element.bind("blur", "$http", function ($http) {
-        var value = zipVal(element.val());
-        var isValid = !!value;
-        myCtrl.$setValidity("zip", isValid);
-
-        if (isValid) {
-        	console.log(value);
-        };
-        scope.$apply();
-				// $http.get('/api/v1/location/60626.json').success(function(response) {console.log(response);});
-
-	    });
-    }
-  };
+    };
 });
+
+
+// myApp.directive("zipValidation", function () {
+//   return {
+//     restrict: "A",
+//     require: "ngModel",
+//     link: function (scope, element, attr, myCtrl) {
+//       var zipVal = function (value) {
+//         if (/^\d{5}$/.test(value)) {
+//             return value;
+//         }
+
+//         return undefined;
+//       }
+
+//       myCtrl.$parsers.push(zipVal);
+//       myCtrl.$formatters.push(zipVal);
+
+// 	    element.bind("blur", "$http", function ($http) {
+//         var value = zipVal(element.val());
+//         var isValid = !!value;
+//         myCtrl.$setValidity("zip", isValid);
+
+//         if (isValid) {
+//         	console.log(value);
+//         };
+//         scope.$apply();
+// 				// $http.get('/api/v1/location/60626.json').success(function(response) {console.log(response);});
+
+// 	    });
+//     }
+//   };
+// });
 
 
 // '/api/v1/location/' + zip + '.json'
