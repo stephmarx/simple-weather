@@ -19,17 +19,24 @@
 var app = angular.module("myApp", []);
 
 app.controller("myCtrl",["$scope", "$http", function($scope, $http) {
+	$scope.forecast;
 	$scope.input = {
         zip: undefined
     };
+  $scope.displayZipError = false;
 
     $scope.getForecast = function() {
+    	if ($scope.input.zip !== undefined){
         var lookup = "/api/v1/location/" + $scope.input.zip + ".json";
         $http.get(lookup).success(function(response) {
-            console.log(response);
             $scope.forecast = response;
+            $scope.displayZipError = false;
+
         });
+    } else {
+    	$scope.displayZipError = true;
     }
+  }
 }]);
 
 app.directive("five", function() {

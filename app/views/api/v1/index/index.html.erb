@@ -1,11 +1,15 @@
-<div ng-app="myApp" ng-controller="myCtrl" ng-init="forecast='sun'">
-	<h1>Enter your zip code to get a weather forcast</h1>
-  <form name="myForm">
+<div ng-app="myApp" ng-controller="myCtrl">
+	<h1>Enter your zip code to get a weather forecast</h1>
+
+  <form name="myForm" ng-submit="getForecast()">
 		<input type="text" name="zip" ng-model="input.zip" required five />
-    <span class="error" ng-show="myForm.zip.$error.zip">Invalid zip code!</span>
-    <button type="submit" ng-click="getForecast()">Get Your Forecast</button>
+
+    <div ng-show="displayZipError">Not a valid zip code!</div>
+
+    <input type="submit" value="Submit"></input>
   </form>
 
+<!-- Change forecast response to include location name and zip -->
   <h2>Weather for: {{input.zip}}</h2>
 
   <div ng-repeat="cast in forecast">
